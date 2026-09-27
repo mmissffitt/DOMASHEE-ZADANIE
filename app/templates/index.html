@@ -1,0 +1,9 @@
+<h1>товары</h1>
+{% for product in products %}
+    <p>{{ product.name }} - {{ product.price }} - {{ product.manufacturer_id.name }}</p>
+{% endfor %}
+
+<h1>производители</h1>
+{% for manufacturer in manufacturers %}
+    <p>{{ manufacturer.name }} - {{ manufacturer.country }}</p>
+{% endfor %}
