@@ -1,21 +1,14 @@
-from django.shortcuts import render
-from asgiref.sync import sync_to_async
+from django.shortcuts import render, aget_lost_or_404
 from .models import Manufacturer, Product
-import asyncio
+from asyncio import create_task
 
 
 async def product_list_view(request):
-    get_products = sync_to_async(
-        lambda: list(Product.objects.select_related('manufacturer_id').all())
-    )
-    get_manufacturers = sync_to_async(
-        lambda: list(Manufacturer.objects.all())
-    )
+    products_task = create_task(aget_list_or_404)(Product))
+    manufacturers_task = create_task(aget_list_or_404(Manufacturer))
 
-    products, manufacturers = await asyncio.gather(
-        get_products(),
-        get_manufacturers()
-    )
+    products = await products_task
+    manufacturers = await manufacturers_task
 
     return render(request, 'index.html', {
         'products': products,
